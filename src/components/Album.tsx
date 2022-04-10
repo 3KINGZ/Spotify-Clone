@@ -22,9 +22,19 @@ export const Album = ({ album }: any) => {
       }>
       <FastImage
         source={{ uri: album?.images?.[0]?.url }}
-        style={styles.albumArt}
+        style={[
+          styles.albumArt,
+          { borderRadius: album.album_type !== "album" ? 105 / 2 : 0 },
+        ]}
       />
-      <Text style={styles.title}>{album?.name}</Text>
+      <Text
+        style={[
+          styles.title,
+          { textAlign: album.album_type !== "album" ? "center" : "left" },
+        ]}
+        numberOfLines={1}>
+        {album?.name}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -34,12 +44,13 @@ const styles = StyleSheet.create({
     width: wp(105),
     height: hp(105),
     resizeMode: "contain",
-    marginRight: 12,
+    marginRight: 15,
   },
   title: {
     fontSize: wp(12),
     fontFamily: fonts.semiBold,
     color: colors.white_01,
     marginTop: 10,
+    width: wp(105),
   },
 });

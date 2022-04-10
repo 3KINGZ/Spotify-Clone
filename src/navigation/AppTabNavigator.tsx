@@ -5,7 +5,8 @@ import { HomeScreen, LibraryScreen, SearchScreen } from "../screens";
 import { routes } from "./routes";
 import { TabIcon } from "../components/TabIcon";
 import { colors } from "../themes/colors";
-import { hp } from "utils";
+import { hp, wp } from "utils";
+import { fonts } from "themes";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +26,10 @@ export const AppTabNavigator = () => {
           borderWidth: 0,
         },
         tabBarActiveTintColor: colors.white_01,
+        tabBarLabelStyle: {
+          fontSize: wp(12),
+          fontFamily: fonts.regular,
+        },
       }}
       sceneContainerStyle={{ backgroundColor: colors.black_01 }}>
       <Tab.Screen

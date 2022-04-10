@@ -13,3 +13,18 @@ export const getAlbum = async (id: string) => {
   const login = await getLoginClient();
   return login.get(`v1/albums/${id}`);
 };
+
+export const getCategories = async () => {
+  const login = await getLoginClient();
+  return login.get("v1/browse/categories");
+};
+
+export const getRecommended = async () => {
+  const login = await getLoginClient();
+  return login.get("v1/recommendations?seed_genres=hip-hop");
+};
+
+export const getTopListen = async () => {
+  const login = await getLoginClient();
+  return login.get("v1/browse/categories/toplists/playlists");
+};

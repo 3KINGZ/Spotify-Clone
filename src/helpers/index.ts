@@ -5,3 +5,16 @@ export const getArtist = (artists: []) => {
 
   return artistNames.join(", ");
 };
+
+export const generateGreeting = () => {
+  const date = new Date();
+  const hour = date.getHours();
+
+  if (hour >= 17) {
+    return "Good evening";
+  } else if (hour >= 12 && hour <= 17) {
+    return "Good afternoon";
+  } else {
+    return "Good morning";
+  }
+};

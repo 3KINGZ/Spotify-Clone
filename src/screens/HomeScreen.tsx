@@ -1,65 +1,128 @@
 import React from "react";
 import { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
-import { HorizontalList } from "components";
-import { Album } from "components/Album";
-import { fetchNewReleases } from "store/slices/content.slice";
+import {
+  Category,
+  HorizontalList,
+  Recommended,
+  Spacer,
+  TopListen,
+  Album,
+} from "components";
+import {
+  fetchCategories,
+  fetchNewReleases,
+  fetchRecommended,
+  fetchTopListen,
+} from "store/slices/content.slice";
 import { wp } from "utils";
 import { colors, fonts } from "themes";
+import { generateGreeting } from "helpers";
 
 export const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  const { newReleasesLoading, newReleases } = useSelector(
-    state => state.content,
-  );
+  const {
+    newReleasesLoading,
+    newReleases,
+    categories,
+    categoriesLoading,
+    recommended,
+    recommendedLoading,
+    topListen,
+    topListenLoading,
+  } = useSelector(state => state.content);
+
+  const { track, playing } = useSelector(state => state.player);
 
   console.log("nwr", newReleases);
 
+  console.log("trk", track);
+
   const _fetchNewReleases = () => {
     dispatch(fetchNewReleases());
+    dispatch(fetchCategories());
+    dispatch(fetchRecommended());
+    dispatch(fetchTopListen());
   };
 
   useEffect(() => {
     _fetchNewReleases();
   }, []);
 
+  console.log("catg", categories);
+  console.log("rec", recommended);
+  console.log("topl", topListen);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>New releases</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerTitle}>{generateGreeting()}</Text>
 
-        <View style={styles.buttonsContainer}>
-          <Ionicon
-            name="notifications-outline"
-            size={wp(20)}
-            color={colors.white_01}
-            style={styles.button}
-          />
-          <Ionicon
-            name="timer-outline"
-            size={wp(20)}
-            color={colors.white_01}
-            style={styles.button}
-          />
-          <Ionicon
-            name="settings-outline"
-            size={wp(20)}
-            color={colors.white_01}
-            style={styles.button}
-          />
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity>
+              <Ionicon
+                name="notifications-outline"
+                size={wp(20)}
+                color={colors.white_01}
+                style={styles.button}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicon
+                name="timer-outline"
+                size={wp(20)}
+                color={colors.white_01}
+                style={styles.button}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicon
+                name="settings-outline"
+                size={wp(20)}
+                color={colors.white_01}
+                style={styles.button}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      <HorizontalList
-        showTitle={false}
-        title="New Releases"
-        items={newReleases?.albums?.items}
-        renderItem={({ item }: any) => <Album album={item} />}
-      />
+        <HorizontalList
+          title="New Releases"
+          items={newReleases?.albums?.items}
+          renderItem={({ item }: any) => <Album album={item} />}
+        />
+        <Spacer vertical space={15} />
+        <HorizontalList
+          title="Recommended"
+          items={recommended?.tracks}
+          renderItem={({ item }: any) => <Recommended recommended={item} />}
+        />
+        <Spacer vertical space={15} />
+        <HorizontalList
+          title="Top Listen"
+          items={topListen?.playlists?.items}
+          renderItem={({ item }: any) => <TopListen track={item} />}
+        />
+        <Spacer vertical space={15} />
+        <HorizontalList
+          title="Categories"
+          items={categories?.categories?.items}
+          renderItem={({ item }: any) => <Category category={item} />}
+        />
+        <Spacer vertical space={15} />
+      </ScrollView>
+      <View style={{ backgroundColor: "red", height: 50, width: "100%" }} />
     </View>
   );
 };
@@ -69,6 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black_01,
     flex: 1,
     padding: 15,
+    paddingTop: 30,
   },
   title: {
     color: colors.white_01,
@@ -76,13 +140,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    // alignItems: "center",
   },
   headerTitle: {
     fontSize: wp(19),
     marginBottom: 15,
     fontFamily: fonts.bold,
     color: colors.white_01,
+    textAlignVertical: "bottom",
   },
   buttonsContainer: {
     flexDirection: "row",

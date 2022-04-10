@@ -9,6 +9,9 @@ export const playerSlice: any = createSlice({
   reducers: {
     play: (state, action) => {
       state.playing = !state.playing;
+      if (action.payload) {
+        state.track = action.payload;
+      }
     },
   },
   extraReducers: builder => {},

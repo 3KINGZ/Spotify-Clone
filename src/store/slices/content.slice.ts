@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { getAlbum, getNewReleases } from "api";
+import {
+  getAlbum,
+  getCategories,
+  getNewReleases,
+  getTopListen,
+  getRecommended,
+} from "api";
 
 export const fetchNewReleases = createAsyncThunk("newReleases", async () => {
   try {
@@ -15,7 +21,7 @@ export const fetchNewReleases = createAsyncThunk("newReleases", async () => {
 });
 
 export const fetchAlbumDetail = createAsyncThunk(
-  "albumDetail",
+  "album",
   async (id: string) => {
     try {
       const response = await getAlbum(id);
@@ -28,6 +34,42 @@ export const fetchAlbumDetail = createAsyncThunk(
   },
 );
 
+export const fetchCategories = createAsyncThunk("categories", async () => {
+  try {
+    const response = await getCategories();
+    console.log("categories success", response.data);
+    // RootNavigation.navigate(routes.appTab);
+    return response.data;
+  } catch (error) {
+    console.log("new releases failure");
+    //err out
+  }
+});
+
+export const fetchRecommended = createAsyncThunk("recommeded", async () => {
+  try {
+    const response = await getRecommended();
+    console.log("categories success", response.data);
+    // RootNavigation.navigate(routes.appTab);
+    return response.data;
+  } catch (error) {
+    console.log("new releases failure");
+    //err out
+  }
+});
+
+export const fetchTopListen = createAsyncThunk("topListen", async () => {
+  try {
+    const response = await getTopListen();
+    console.log("top listen success", response.data);
+    // RootNavigation.navigate(routes.appTab);
+    return response.data;
+  } catch (error) {
+    console.log("new releases failure");
+    //err out
+  }
+});
+
 export const contentSlice: any = createSlice({
   name: "auth",
   initialState: {
@@ -35,6 +77,12 @@ export const contentSlice: any = createSlice({
     newReleases: {},
     album: {},
     albumLoading: false,
+    categories: {},
+    categoriesLoading: false,
+    recommendedLoading: false,
+    recommended: {},
+    topListenLoading: false,
+    topListen: {},
   },
   reducers: {
     // logout: (state, action) => {
@@ -66,6 +114,39 @@ export const contentSlice: any = createSlice({
     });
     builder.addCase(fetchAlbumDetail.rejected, (state, action) => {
       state.albumLoading = false;
+    });
+
+    builder.addCase(fetchCategories.pending, (state, action) => {
+      state.categoriesLoading = true;
+    });
+    builder.addCase(fetchCategories.fulfilled, (state, action) => {
+      state.categoriesLoading = false;
+      state.categories = action.payload;
+    });
+    builder.addCase(fetchCategories.rejected, (state, action) => {
+      state.categoriesLoading = false;
+    });
+
+    builder.addCase(fetchRecommended.pending, (state, action) => {
+      state.recommendedLoading = true;
+    });
+    builder.addCase(fetchRecommended.fulfilled, (state, action) => {
+      state.recommendedLoading = false;
+      state.recommended = action.payload;
+    });
+    builder.addCase(fetchRecommended.rejected, (state, action) => {
+      state.recommendedLoading = false;
+    });
+
+    builder.addCase(fetchTopListen.pending, (state, action) => {
+      state.topListenLoading = true;
+    });
+    builder.addCase(fetchTopListen.fulfilled, (state, action) => {
+      state.topListenLoading = false;
+      state.topListen = action.payload;
+    });
+    builder.addCase(fetchTopListen.rejected, (state, action) => {
+      state.topListenLoading = false;
     });
   },
 });

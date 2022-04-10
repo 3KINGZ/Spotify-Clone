@@ -1,7 +1,8 @@
+import { routes } from "navigation/routes";
 import axios from "axios";
 
 import { apiConfig } from "config";
-import { getValue } from "utils";
+import { getValue, RootNavigation, deleteItem } from "utils";
 
 const getAccessToken = async () => {
   try {
@@ -61,10 +62,8 @@ loginClient.interceptors.response.use(
   async response => {
     if (response?.status === 401 || response?.status === 403) {
       try {
-        // store.dispatch(getRefreshToken());
-        // deleteSensitiveInfo("accessToken");
-        // deleteObjectValue("userInfo");
-        // store.dispatch({ type: types.LOGOUT.SUCCESS });
+        deleteItem("@token");
+        RootNavigation.navigate(routes.appTab);
       } catch (error) {
         // Error retrieving data
         console.log(error, "logged in client error");
