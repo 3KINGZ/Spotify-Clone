@@ -17,6 +17,7 @@ import {
   Spacer,
   TopListen,
   Album,
+  NowPlayingModal,
 } from "components";
 import {
   fetchCategories,
@@ -122,7 +123,11 @@ export const HomeScreen = () => {
         />
         <Spacer vertical space={15} />
       </ScrollView>
-      <View style={{ backgroundColor: "red", height: 50, width: "100%" }} />
+      {playing && track ? (
+        <View style={{ width: "100%" }}>
+          <NowPlayingModal />
+        </View>
+      ) : null}
     </View>
   );
 };

@@ -8,10 +8,13 @@ export const playerSlice: any = createSlice({
   },
   reducers: {
     play: (state, action) => {
-      state.playing = !state.playing;
+      state.playing = true;
       if (action.payload) {
         state.track = action.payload;
       }
+    },
+    pause: (state, action) => {
+      state.playing = false;
     },
   },
   extraReducers: builder => {},

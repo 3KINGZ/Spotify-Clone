@@ -6,3 +6,4 @@ export * from "./Category";
 export * from "./Recommeded";
 export * from "./TopListen";
 export * from "./Album";
+export * from "./NowPlayingModal";

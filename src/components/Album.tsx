@@ -2,13 +2,16 @@ import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 
 import { hp, wp } from "utils";
 import { fonts, colors } from "themes";
 import { routes } from "navigation/routes";
+import { play } from "store/slices/player.slice";
 
 export const Album = ({ album }: any) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <TouchableOpacity
@@ -18,7 +21,7 @@ export const Album = ({ album }: any) => {
               screen: routes.album,
               params: { id: album?.id },
             })
-          : null
+          : dispatch(play(album))
       }>
       <FastImage
         source={{ uri: album?.images?.[0]?.url }}

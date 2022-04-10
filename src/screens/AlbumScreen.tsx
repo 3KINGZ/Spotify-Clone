@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,16 +6,15 @@ import SIcon from "react-native-vector-icons/SimpleLineIcons";
 import EIcon from "react-native-vector-icons/Entypo";
 import AIcon from "react-native-vector-icons/AntDesign";
 import FIcon from "react-native-vector-icons/Feather";
-import ImageColors from "react-native-image-colors";
 import LinearGradient from "react-native-linear-gradient";
 
 import { fetchAlbumDetail } from "store/slices/content.slice";
 import { colors, fonts } from "themes";
 import { hp, wp } from "utils";
-import { getImageUrl } from "helpers";
 import { IconContainer, Player, Spacer } from "components";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { Track } from "components/Track";
+import { useGetDominantColors } from "hooks";
 
 export const AlbumScreen = ({ route, navigation }: any) => {
   const { id } = route.params;
@@ -24,73 +23,13 @@ export const AlbumScreen = ({ route, navigation }: any) => {
 
   const { album, albumLoading } = useSelector(state => state.content);
 
-  const [albumColor, setAlbumColor] = useState({
-    colorOne: { value: "", name: "" },
-    colorTwo: { value: "", name: "" },
-    colorThree: { value: "", name: "" },
-    colorFour: { value: "", name: "" },
-    rawResult: "",
-  });
-
-  const [albumColorLoading, setAlbumColorLoading] = useState(false);
-
   const albumArt = album?.images?.[0]?.url;
 
-  console.log("alb det", album);
-
-  const fetchColors = async () => {
-    const result = await ImageColors.getColors(album?.images?.[0]?.url, {
-      fallback: "#000000",
-      quality: "low",
-      pixelSpacing: 5,
-      cache: true,
-    });
-
-    switch (result.platform) {
-      case "android":
-      case "web":
-        setAlbumColor({
-          colorOne: { value: result?.lightVibrant, name: "lightVibrant" },
-          colorTwo: { value: result.dominant, name: "dominant" },
-          colorThree: { value: result.vibrant, name: "vibrant" },
-          colorFour: { value: result.darkVibrant, name: "darkVibrant" },
-          rawResult: JSON.stringify(result),
-        });
-        break;
-      case "ios":
-        setAlbumColor({
-          colorOne: { value: result.background, name: "background" },
-          colorTwo: { value: result.detail, name: "detail" },
-          colorThree: { value: result.primary, name: "primary" },
-          colorFour: { value: result.secondary, name: "secondary" },
-          rawResult: JSON.stringify(result),
-        });
-        break;
-      default:
-        throw new Error("Unexpected platform");
-    }
-
-    setAlbumColorLoading(false);
-  };
+  const [albumColor, albumColorLoading] = useGetDominantColors(albumArt, album);
 
   useEffect(() => {
-    // dispatch(fetchAlbumDetail(id)).then(() => {
-    //   dispatch(fetchAlbumDetail(id));
-    //   fetchColors();
-    // });
-
     dispatch(fetchAlbumDetail(id));
-
-    //fetchColors();
   }, []);
-
-  useEffect(() => {
-    if (album != {}) {
-      fetchColors();
-    }
-  }, [album]);
-
-  console.log("colors from aa", albumColor);
 
   return (
     <ScrollView>
