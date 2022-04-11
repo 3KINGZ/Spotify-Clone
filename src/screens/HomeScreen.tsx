@@ -6,8 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { batch, useDispatch, useSelector } from "react-redux";
 import Ionicon from "react-native-vector-icons/Ionicons";
 
 import {
@@ -17,8 +18,8 @@ import {
   Spacer,
   TopListen,
   Album,
-  NowPlayingModal,
   PlayerScreenHOC,
+  Loading,
 } from "components";
 import {
   fetchCategories,
@@ -44,15 +45,13 @@ export const HomeScreen = () => {
     topListenLoading,
   } = useSelector(state => state.content);
 
-  const { track, playing } = useSelector(state => state.player);
-
-  console.log("trk", track);
-
   const _fetchNewReleases = () => {
-    dispatch(fetchNewReleases());
-    dispatch(fetchCategories());
-    dispatch(fetchRecommended());
-    dispatch(fetchTopListen());
+    batch(() => {
+      dispatch(fetchNewReleases());
+      dispatch(fetchCategories());
+      dispatch(fetchRecommended());
+      dispatch(fetchTopListen());
+    });
   };
 
   useEffect(() => {
@@ -61,62 +60,89 @@ export const HomeScreen = () => {
 
   return (
     <PlayerScreenHOC>
-      <ScrollView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerTitle}>{generateGreeting()}</Text>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={
+              newReleasesLoading ||
+              categoriesLoading ||
+              recommendedLoading ||
+              topListenLoading
+            }
+            onRefresh={
+              (!newReleasesLoading ||
+                !categoriesLoading ||
+                !recommendedLoading ||
+                !topListenLoading) &&
+              _fetchNewReleases
+            }
+          />
+        }>
+        {newReleasesLoading ||
+        categoriesLoading ||
+        recommendedLoading ||
+        topListenLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerTitle}>{generateGreeting()}</Text>
 
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity>
-              <Ionicon
-                name="notifications-outline"
-                size={wp(20)}
-                color={colors.white_01}
-                style={styles.button}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Ionicon
-                name="timer-outline"
-                size={wp(20)}
-                color={colors.white_01}
-                style={styles.button}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Ionicon
-                name="settings-outline"
-                size={wp(20)}
-                color={colors.white_01}
-                style={styles.button}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
+              <View style={styles.buttonsContainer}>
+                <TouchableOpacity>
+                  <Ionicon
+                    name="notifications-outline"
+                    size={wp(20)}
+                    color={colors.white_01}
+                    style={styles.button}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicon
+                    name="timer-outline"
+                    size={wp(20)}
+                    color={colors.white_01}
+                    style={styles.button}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicon
+                    name="settings-outline"
+                    size={wp(20)}
+                    color={colors.white_01}
+                    style={styles.button}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-        <HorizontalList
-          title="New Releases"
-          items={newReleases?.albums?.items}
-          renderItem={({ item }: any) => <Album album={item} />}
-        />
-        <Spacer vertical space={15} />
-        <HorizontalList
-          title="Recommended"
-          items={recommended?.tracks}
-          renderItem={({ item }: any) => <Recommended recommended={item} />}
-        />
-        <Spacer vertical space={15} />
-        <HorizontalList
-          title="Top Listen"
-          items={topListen?.playlists?.items}
-          renderItem={({ item }: any) => <TopListen track={item} />}
-        />
-        <Spacer vertical space={15} />
-        <HorizontalList
-          title="Categories"
-          items={categories?.categories?.items}
-          renderItem={({ item }: any) => <Category category={item} />}
-        />
-        <Spacer vertical space={15} />
+            <HorizontalList
+              title="New Releases"
+              items={newReleases?.albums?.items}
+              renderItem={({ item }: any) => <Album album={item} />}
+            />
+            <Spacer vertical space={15} />
+            <HorizontalList
+              title="Recommended"
+              items={recommended?.tracks}
+              renderItem={({ item }: any) => <Recommended recommended={item} />}
+            />
+            <Spacer vertical space={15} />
+            <HorizontalList
+              title="Top Listen"
+              items={topListen?.playlists?.items}
+              renderItem={({ item }: any) => <TopListen track={item} />}
+            />
+            <Spacer vertical space={15} />
+            <HorizontalList
+              title="Categories"
+              items={categories?.categories?.items}
+              renderItem={({ item }: any) => <Category category={item} />}
+            />
+            <Spacer vertical space={15} />
+          </>
+        )}
       </ScrollView>
     </PlayerScreenHOC>
   );

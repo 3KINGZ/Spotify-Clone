@@ -8,3 +8,4 @@ export * from "./TopListen";
 export * from "./Album";
 export * from "./NowPlayingModal";
 export * from "./PlayerScreenHOC";
+export * from "./Loading";

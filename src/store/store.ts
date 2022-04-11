@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { enableBatching } from "redux-batched-actions";
 
 import authReducer from "./slices/auth.slice";
 import contentReducer from "./slices/content.slice";
