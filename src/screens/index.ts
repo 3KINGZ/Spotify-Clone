@@ -5,3 +5,4 @@ export * from "./SearchScreen";
 export * from "./AlbumScreen";
 export * from "./SearchScreen";
 export * from "./AuthScreen";
+export * from "./SplashScreen";

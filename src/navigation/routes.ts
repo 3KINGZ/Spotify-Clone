@@ -1,4 +1,4 @@
-export const routes = {
+export const routes = Object.freeze({
   auth: "auth",
   home: "Home",
   search: "Search",
@@ -7,4 +7,5 @@ export const routes = {
   album: "Album",
   appTab: "App Tab",
   appStack: "App Stack",
-};
+  splash: "splash",
+});
