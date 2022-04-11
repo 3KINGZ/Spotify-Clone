@@ -20,6 +20,6 @@ export const playerSlice: any = createSlice({
   extraReducers: builder => {},
 });
 
-export const { play } = playerSlice.actions;
+export const { play, pause } = playerSlice.actions;
 
 export default playerSlice.reducer;

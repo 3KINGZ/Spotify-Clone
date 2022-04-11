@@ -7,11 +7,18 @@ import { useDispatch } from "react-redux";
 import { hp, wp } from "utils";
 import { fonts, colors } from "themes";
 import { routes } from "navigation/routes";
-import { play } from "store/slices/player.slice";
+import { usePlayer } from "hooks";
 
 export const Album = ({ album }: any) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const [_play] = usePlayer(album);
+
+  const _play2 = () => {
+    console.log("gm");
+    _play();
+  };
 
   return (
     <TouchableOpacity
@@ -21,7 +28,7 @@ export const Album = ({ album }: any) => {
               screen: routes.album,
               params: { id: album?.id },
             })
-          : dispatch(play(album))
+          : _play2()
       }>
       <FastImage
         source={{ uri: album?.images?.[0]?.url }}

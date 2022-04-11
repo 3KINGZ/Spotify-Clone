@@ -3,10 +3,9 @@ import { View, Text, StyleSheet } from "react-native";
 import FastImage from "react-native-fast-image";
 
 import { colors, fonts } from "themes";
-import { wp, hp } from "utils";
+import { wp } from "utils";
 
 export const TopListen = ({ track }: any) => {
-  console.log("trn", track?.name);
   return (
     <View style={{ marginRight: 15 }}>
       <FastImage

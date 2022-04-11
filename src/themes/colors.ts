@@ -6,4 +6,6 @@ export const colors = {
   green_01: "#1ED760",
   black_02: "#000000",
   grey_01: "#B3B3B3",
+  grey_02: "#ABA4A3",
+  black_03: "#1B1A1C",
 };

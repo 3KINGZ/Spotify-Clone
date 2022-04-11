@@ -21,8 +21,6 @@ export const AuthScreen = () => {
 
   const { loading } = useSelector(state => state.auth);
 
-  console.log(loading);
-
   const login = () => {
     dispatch(signIn());
   };

@@ -7,3 +7,4 @@ export * from "./Recommeded";
 export * from "./TopListen";
 export * from "./Album";
 export * from "./NowPlayingModal";
+export * from "./PlayerScreenHOC";

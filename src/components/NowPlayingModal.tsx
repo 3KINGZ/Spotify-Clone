@@ -3,19 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
 import IIcon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useSelector } from "react-redux";
 import { colors, fonts } from "themes";
 import { wp, hp } from "utils";
 import { getArtist } from "helpers";
 import { Spacer } from "./Spacer";
 import { routes } from "navigation/routes";
+import { usePlayer } from "hooks";
 
 export const NowPlayingModal = () => {
   const { track, playing } = useSelector(state => state.player);
   const navigation = useNavigation();
+  const [_play] = usePlayer(track);
 
-  console.log("trk2", track);
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ export const NowPlayingModal = () => {
           <Text style={styles.artist}>{getArtist(track?.artists)}</Text>
         </View>
       </TouchableOpacity>
-      <View>
+      <TouchableOpacity onPress={_play}>
         {playing ? (
           <IIcon
             name="ios-pause-outline"
@@ -44,7 +46,7 @@ export const NowPlayingModal = () => {
         ) : (
           <IIcon name="ios-play" size={wp(20)} color={colors.white_01} />
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
+    backgroundColor: colors.black_01,
   },
   songArt: {
     width: wp(39),

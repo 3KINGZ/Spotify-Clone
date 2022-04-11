@@ -7,7 +7,7 @@ import IIcon from "react-native-vector-icons/Ionicons";
 import MIIcon from "react-native-vector-icons/MaterialIcons";
 import AIcon from "react-native-vector-icons/AntDesign";
 
-import { useGetDominantColors } from "hooks";
+import { useGetDominantColors, usePlayer } from "hooks";
 import { colors, fonts } from "themes";
 import { useSelector } from "react-redux";
 import FastImage from "react-native-fast-image";
@@ -19,6 +19,8 @@ export const NowPlayingScreen = ({ navigation }) => {
 
   const songArt = track?.images?.[0]?.url;
   const [albumColor, albumColorLoading] = useGetDominantColors(songArt, track);
+
+  const [_play] = usePlayer(track);
 
   return (
     <LinearGradient
@@ -90,6 +92,7 @@ export const NowPlayingScreen = ({ navigation }) => {
           color={colors.white_01}
         />
         <TouchableOpacity
+          onPress={_play}
           style={{
             width: wp(67),
             height: hp(67),
@@ -136,7 +139,7 @@ export const NowPlayingScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    padding: 17,
     justifyContent: "space-between",
   },
   headerContainer: {

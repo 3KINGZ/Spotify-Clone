@@ -8,12 +8,17 @@ import { wp } from "utils";
 import { IconContainer } from "./IconContainer";
 import { Spacer } from "./Spacer";
 import { getArtist } from "helpers";
+import { usePlayer } from "hooks";
 
 export const Track = ({ track }: any) => {
+  const [_play] = usePlayer(track);
+
   return (
-    <TouchableOpacity style={styles.container}>
-      <View>
-        <Text style={styles.trackName}>{track?.name}</Text>
+    <TouchableOpacity style={styles.container} onPress={_play}>
+      <View style={{ width: "90%" }}>
+        <Text style={styles.trackName} numberOfLines={1}>
+          {track?.name}
+        </Text>
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <IconContainer size={13}>
@@ -28,7 +33,7 @@ export const Track = ({ track }: any) => {
         </View>
       </View>
 
-      <FIcon name="more-horizontal" />
+      <FIcon name="more-horizontal" color={colors.grey_02} size={wp(17)} />
     </TouchableOpacity>
   );
 };

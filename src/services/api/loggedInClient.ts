@@ -9,8 +9,6 @@ const getAccessToken = async () => {
     let token: any = await getValue("@token");
     token = JSON.parse(token);
 
-    console.log("tk", token);
-
     if (token !== null) {
       // const item = JSON.parse(retrievedItem);
       // console.log(item);

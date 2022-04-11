@@ -11,11 +11,9 @@ import {
 export const fetchNewReleases = createAsyncThunk("newReleases", async () => {
   try {
     const response = await getNewReleases();
-    console.log("new releases success", response.data);
     // RootNavigation.navigate(routes.appTab);
     return response.data;
   } catch (error) {
-    console.log("new releases failure");
     //err out
   }
 });
@@ -25,10 +23,8 @@ export const fetchAlbumDetail = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getAlbum(id);
-      console.log("new releases success", response.data);
       return response.data;
     } catch (error) {
-      console.log("new releases failure");
       //err out
     }
   },
@@ -37,11 +33,9 @@ export const fetchAlbumDetail = createAsyncThunk(
 export const fetchCategories = createAsyncThunk("categories", async () => {
   try {
     const response = await getCategories();
-    console.log("categories success", response.data);
     // RootNavigation.navigate(routes.appTab);
     return response.data;
   } catch (error) {
-    console.log("new releases failure");
     //err out
   }
 });
@@ -49,11 +43,9 @@ export const fetchCategories = createAsyncThunk("categories", async () => {
 export const fetchRecommended = createAsyncThunk("recommeded", async () => {
   try {
     const response = await getRecommended();
-    console.log("categories success", response.data);
     // RootNavigation.navigate(routes.appTab);
     return response.data;
   } catch (error) {
-    console.log("new releases failure");
     //err out
   }
 });
@@ -61,11 +53,9 @@ export const fetchRecommended = createAsyncThunk("recommeded", async () => {
 export const fetchTopListen = createAsyncThunk("topListen", async () => {
   try {
     const response = await getTopListen();
-    console.log("top listen success", response.data);
     // RootNavigation.navigate(routes.appTab);
     return response.data;
   } catch (error) {
-    console.log("new releases failure");
     //err out
   }
 });

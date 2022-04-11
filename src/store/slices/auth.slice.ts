@@ -7,7 +7,6 @@ import { routes } from "navigation/routes";
 export const signIn = createAsyncThunk("login", async () => {
   try {
     const response = await login();
-    console.log("login success", response.data?.access_token);
     RootNavigation.navigate(routes.appTab);
     return response.data;
   } catch (error) {

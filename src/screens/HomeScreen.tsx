@@ -18,6 +18,7 @@ import {
   TopListen,
   Album,
   NowPlayingModal,
+  PlayerScreenHOC,
 } from "components";
 import {
   fetchCategories,
@@ -45,8 +46,6 @@ export const HomeScreen = () => {
 
   const { track, playing } = useSelector(state => state.player);
 
-  console.log("nwr", newReleases);
-
   console.log("trk", track);
 
   const _fetchNewReleases = () => {
@@ -60,12 +59,8 @@ export const HomeScreen = () => {
     _fetchNewReleases();
   }, []);
 
-  console.log("catg", categories);
-  console.log("rec", recommended);
-  console.log("topl", topListen);
-
   return (
-    <View style={{ flex: 1 }}>
+    <PlayerScreenHOC>
       <ScrollView style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerTitle}>{generateGreeting()}</Text>
@@ -123,18 +118,13 @@ export const HomeScreen = () => {
         />
         <Spacer vertical space={15} />
       </ScrollView>
-      {playing && track ? (
-        <View style={{ width: "100%" }}>
-          <NowPlayingModal />
-        </View>
-      ) : null}
-    </View>
+    </PlayerScreenHOC>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.black_01,
+    backgroundColor: colors.black_02,
     flex: 1,
     padding: 15,
     paddingTop: 30,
@@ -145,7 +135,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems: "center",
   },
   headerTitle: {
     fontSize: wp(19),

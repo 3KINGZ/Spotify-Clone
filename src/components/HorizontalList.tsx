@@ -17,7 +17,6 @@ export const HorizontalList = ({
   renderItem,
   showTitle = true,
 }: IHorizontalList) => {
-  console.log("itemsss", items);
   return (
     <View>
       {showTitle ? <Text style={styles.title}>{title}</Text> : null}
@@ -26,6 +25,7 @@ export const HorizontalList = ({
         data={items}
         keyExtractor={data => data?.id}
         renderItem={renderItem}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

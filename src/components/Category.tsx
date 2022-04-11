@@ -6,8 +6,6 @@ import { colors, fonts } from "themes";
 import { wp, hp } from "utils";
 
 export const Category = ({ category }: any) => {
-  console.log("catg image", category?.icons?.[0]?.url);
-
   return (
     <View style={{ marginRight: 15 }}>
       <FastImage
