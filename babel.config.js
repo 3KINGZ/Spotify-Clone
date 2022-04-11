@@ -20,8 +20,8 @@ module.exports = {
     "jest-hoist",
   ],
   env: {
-    production: {
-      plugins: ["react-native-paper/babel", "transform-remove-console"],
-    },
+    // production: {
+    //   plugins: ["transform-remove-console"],
+    // },
   },
 };

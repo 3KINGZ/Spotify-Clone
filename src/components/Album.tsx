@@ -16,7 +16,6 @@ export const Album = ({ album }: any) => {
   const [_play] = usePlayer(album);
 
   const _play2 = () => {
-    console.log("gm");
     _play();
   };
 
